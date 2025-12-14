@@ -16,7 +16,7 @@
 
 <script>
 export default {
-  name: 'LdDropdownItem',
+  name: 'SbDropdownItem',
   props: {
     href: { type: String, default: null },
     disabled: { type: Boolean, default: false }

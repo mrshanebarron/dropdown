@@ -26,7 +26,7 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 
 export default {
-  name: 'LdDropdown',
+  name: 'SbDropdown',
   props: {
     align: { type: String, default: 'left' },
     width: { type: String, default: '48' },

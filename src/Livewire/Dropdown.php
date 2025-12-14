@@ -36,6 +36,6 @@ class Dropdown extends Component
 
     public function render()
     {
-        return view('ld-dropdown::livewire.dropdown');
+        return view('sb-dropdown::livewire.dropdown');
     }
 }

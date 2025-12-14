@@ -5,7 +5,7 @@ export { Dropdown, DropdownItem };
 
 export default {
   install(app) {
-    app.component('LdDropdown', Dropdown);
-    app.component('LdDropdownItem', DropdownItem);
+    app.component('SbDropdown', Dropdown);
+    app.component('SbDropdownItem', DropdownItem);
   }
 };
