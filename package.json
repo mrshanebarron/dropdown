@@ -1,0 +1,12 @@
+{
+    "name": "@mrshanebarron/dropdown",
+    "version": "1.0.0",
+    "description": "Dropdown menu component - Vue 3",
+    "main": "resources/js/index.js",
+    "files": ["resources/js", "resources/css"],
+    "keywords": ["vue", "vue3", "dropdown", "menu", "laravel"],
+    "author": "Shane Barron <mrshanebarron@gmail.com>",
+    "license": "MIT",
+    "peerDependencies": {"vue": "^3.0.0"},
+    "repository": {"type": "git", "url": "https://github.com/mrshanebarron/dropdown.git"}
+}
