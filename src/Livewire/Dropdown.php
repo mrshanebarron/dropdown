@@ -11,17 +11,23 @@ class Dropdown extends Component
     public string $width = '48';
     public bool $closeOnClick = true;
     public bool $closeOnOutsideClick = true;
+    public array $items = [];
+    public string $trigger = '';
 
     public function mount(
         string $align = 'left',
         string $width = '48',
         bool $closeOnClick = true,
-        bool $closeOnOutsideClick = true
+        bool $closeOnOutsideClick = true,
+        array $items = [],
+        string $trigger = ''
     ): void {
         $this->align = $align;
         $this->width = $width;
         $this->closeOnClick = $closeOnClick;
         $this->closeOnOutsideClick = $closeOnOutsideClick;
+        $this->items = $items;
+        $this->trigger = $trigger;
     }
 
     public function toggle(): void
