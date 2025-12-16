@@ -8,7 +8,7 @@ class DropdownServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/dropdown.php', 'sb-dropdown');
+        $this->mergeConfigFrom(__DIR__ . '/../config/sb-dropdown.php', 'sb-dropdown');
     }
 
     public function boot(): void
@@ -21,7 +21,7 @@ class DropdownServiceProvider extends ServiceProvider
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/../config/dropdown.php' => config_path('sb-dropdown.php'),
+                __DIR__ . '/../config/sb-dropdown.php' => config_path('sb-dropdown.php'),
             ], 'sb-dropdown-config');
         }
     }
