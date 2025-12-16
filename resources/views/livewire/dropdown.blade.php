@@ -10,7 +10,7 @@
 >
     {{-- Trigger --}}
     <div wire:click="toggle">
-        {{ $trigger }}
+        {{ $trigger ?? '' }}
     </div>
 
     {{-- Dropdown Menu --}}
@@ -20,7 +20,7 @@
             @if($closeOnClick) wire:click="close" @endif
         >
             <div class="py-1" role="menu" aria-orientation="vertical">
-                {{ $slot }}
+                {{ $slot ?? '' }}
             </div>
         </div>
     @endif
