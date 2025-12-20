@@ -1,56 +1,87 @@
 @php
-    $widthClass = config('sb-dropdown.widths.' . $width, 'w-48');
-    $alignClass = config('sb-dropdown.alignments.' . $align, 'left-0');
+$widthStyles = [
+    'sm' => '10rem',
+    'md' => '12rem',
+    'lg' => '16rem',
+    'xl' => '20rem',
+];
+$menuWidth = $widthStyles[$width] ?? $widthStyles['md'];
+
+$alignStyles = [
+    'left' => 'left: 0;',
+    'right' => 'right: 0;',
+];
+$menuAlign = $alignStyles[$align] ?? $alignStyles['left'];
+
+$variantStyles = [
+    'default' => 'background-color: white; color: #374151; border: 1px solid #d1d5db;',
+    'primary' => 'background-color: #2563eb; color: white; border: none;',
+    'secondary' => 'background-color: #4b5563; color: white; border: none;',
+];
+$buttonStyle = $variantStyles[$variant] ?? $variantStyles['default'];
 @endphp
 
 <div
-    class="{{ config('sb-dropdown.classes.container') }}"
-    wire:click.away="@if($closeOnOutsideClick) close @endif"
-    wire:keydown.escape="close"
+    style="position: relative; display: inline-block;"
+    x-data
+    x-on:click.away="$wire.close()"
+    x-on:keydown.escape.window="$wire.close()"
 >
-    {{-- Trigger --}}
-    <div wire:click="toggle">
-        @if($trigger)
-            {!! $trigger !!}
-        @else
-            {{ $slot ?? '' }}
-        @endif
-    </div>
+    {{-- Trigger Button --}}
+    <button
+        wire:click="toggle"
+        style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; font-size: 0.875rem; font-weight: 500; border-radius: 0.375rem; cursor: pointer; {{ $buttonStyle }}"
+    >
+        {{ $label }}
+        <svg style="width: 1rem; height: 1rem; transition: transform 0.2s; {{ $open ? 'transform: rotate(180deg);' : '' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+    </button>
 
     {{-- Dropdown Menu --}}
     @if($open)
-        <div
-            class="{{ config('sb-dropdown.classes.menu') }} {{ $widthClass }} {{ $alignClass }}"
-            @if($closeOnClick) wire:click="close" @endif
-        >
-            <div class="py-1" role="menu" aria-orientation="vertical">
-                @if(count($items) > 0)
-                    @foreach($items as $item)
-                        @if(isset($item['separator']) && $item['separator'])
-                            <div class="border-t border-gray-100 my-1"></div>
-                        @elseif(isset($item['href']))
-                            <a
-                                href="{{ $item['href'] }}"
-                                class="{{ config('sb-dropdown.classes.item') }} {{ $item['class'] ?? '' }}"
-                                @if(isset($item['target'])) target="{{ $item['target'] }}" @endif
-                            >
-                                {{ $item['label'] }}
-                            </a>
-                        @elseif(isset($item['action']))
-                            <button
-                                type="button"
-                                wire:click="{{ $item['action'] }}"
-                                class="{{ config('sb-dropdown.classes.item') }} {{ $item['class'] ?? '' }} w-full text-left"
-                            >
-                                {{ $item['label'] }}
-                            </button>
-                        @else
-                            <div class="{{ config('sb-dropdown.classes.item') }} {{ $item['class'] ?? '' }}">
-                                {{ $item['label'] }}
-                            </div>
-                        @endif
-                    @endforeach
-                @endif
+        <div style="position: absolute; {{ $menuAlign }} margin-top: 0.5rem; width: {{ $menuWidth }}; background-color: white; border-radius: 0.5rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05); border: 1px solid #e5e7eb; z-index: 50; overflow: hidden;">
+            <div style="padding: 0.25rem 0;" role="menu">
+                @foreach($items as $index => $item)
+                    @if(isset($item['label']) && $item['label'] === 'divider')
+                        <div style="border-top: 1px solid #e5e7eb; margin: 0.25rem 0;"></div>
+                    @elseif(isset($item['href']))
+                        @php
+                            $isDanger = isset($item['danger']) && $item['danger'];
+                            $itemColor = $isDanger ? '#dc2626' : '#374151';
+                            $hoverBg = $isDanger ? '#fef2f2' : '#f3f4f6';
+                        @endphp
+                        <a
+                            href="{{ $item['href'] }}"
+                            style="display: block; padding: 0.5rem 1rem; font-size: 0.875rem; color: {{ $itemColor }}; text-decoration: none;"
+                            onmouseover="this.style.backgroundColor='{{ $hoverBg }}'"
+                            onmouseout="this.style.backgroundColor='transparent'"
+                            @if(isset($item['target'])) target="{{ $item['target'] }}" @endif
+                        >
+                            @if(isset($item['icon']))
+                                <span style="margin-right: 0.5rem;">{!! $item['icon'] !!}</span>
+                            @endif
+                            {{ $item['label'] }}
+                        </a>
+                    @else
+                        @php
+                            $isDanger = isset($item['danger']) && $item['danger'];
+                            $itemColor = $isDanger ? '#dc2626' : '#374151';
+                            $hoverBg = $isDanger ? '#fef2f2' : '#f3f4f6';
+                        @endphp
+                        <button
+                            wire:click="selectItem({{ $index }})"
+                            style="display: block; width: 100%; padding: 0.5rem 1rem; font-size: 0.875rem; color: {{ $itemColor }}; text-align: left; border: none; background: transparent; cursor: pointer;"
+                            onmouseover="this.style.backgroundColor='{{ $hoverBg }}'"
+                            onmouseout="this.style.backgroundColor='transparent'"
+                        >
+                            @if(isset($item['icon']))
+                                <span style="margin-right: 0.5rem;">{!! $item['icon'] !!}</span>
+                            @endif
+                            {{ $item['label'] ?? '' }}
+                        </button>
+                    @endif
+                @endforeach
             </div>
         </div>
     @endif
