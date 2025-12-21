@@ -5,20 +5,20 @@ $widthStyles = [
     'lg' => '16rem',
     'xl' => '20rem',
 ];
-$menuWidth = $widthStyles[$width] ?? $widthStyles['md'];
+$menuWidth = $widthStyles[$this->width] ?? $widthStyles['md'];
 
 $alignStyles = [
     'left' => 'left: 0;',
     'right' => 'right: 0;',
 ];
-$menuAlign = $alignStyles[$align] ?? $alignStyles['left'];
+$menuAlign = $alignStyles[$this->align] ?? $alignStyles['left'];
 
 $variantStyles = [
     'default' => 'background-color: white; color: #374151; border: 1px solid #d1d5db;',
     'primary' => 'background-color: #2563eb; color: white; border: none;',
     'secondary' => 'background-color: #4b5563; color: white; border: none;',
 ];
-$buttonStyle = $variantStyles[$variant] ?? $variantStyles['default'];
+$buttonStyle = $variantStyles[$this->variant] ?? $variantStyles['default'];
 @endphp
 
 <div
@@ -32,17 +32,17 @@ $buttonStyle = $variantStyles[$variant] ?? $variantStyles['default'];
         wire:click="toggle"
         style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; font-size: 0.875rem; font-weight: 500; border-radius: 0.375rem; cursor: pointer; {{ $buttonStyle }}"
     >
-        {{ $label }}
-        <svg style="width: 1rem; height: 1rem; transition: transform 0.2s; {{ $open ? 'transform: rotate(180deg);' : '' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        {{ $this->label }}
+        <svg style="width: 1rem; height: 1rem; transition: transform 0.2s; {{ $this->open ? 'transform: rotate(180deg);' : '' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
         </svg>
     </button>
 
     {{-- Dropdown Menu --}}
-    @if($open)
+    @if($this->open)
         <div style="position: absolute; {{ $menuAlign }} margin-top: 0.5rem; width: {{ $menuWidth }}; background-color: white; border-radius: 0.5rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05); border: 1px solid #e5e7eb; z-index: 50; overflow: hidden;">
             <div style="padding: 0.25rem 0;" role="menu">
-                @foreach($items as $index => $item)
+                @foreach($this->items as $index => $item)
                     @if(isset($item['label']) && $item['label'] === 'divider')
                         <div style="border-top: 1px solid #e5e7eb; margin: 0.25rem 0;"></div>
                     @elseif(isset($item['href']))
